@@ -106,18 +106,21 @@ class Account(object):
             if not self.savings:
                 print("\nOpened a Savings account!")
                 self.savings = True
+                self.account = True
             else:
                 print("\nERROR: Only one savings account allowed per user!")
         elif account_choice == "chequings":
             if not self.chequings:
                 print("\nOpened a Chequings account!")
                 self.chequings = True
+                self.account = True
             else:
                 print("\nERROR: Only one chequings account allowed per user!")
         elif account_choice == "tax free":
             if not self.tax_free:
                 print("\nOpened a Tax Free account!")
                 self.tax_free = True
+                self.account = True
             else:
                 print("\nERROR: Only one tax free account allowed per user!")
         elif account_choice == "info":
