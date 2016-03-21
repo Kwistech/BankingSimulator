@@ -5,27 +5,36 @@ class Account(object):
     """User bank account filled with methods to do basic real-life bank transactions.  """
 
     def __init__(self, username="", password="", savings=False, chequings=False, tax_free=False):
+        """The parameters are all set to defaults so that a user can create an account without setting account
+        properties to their defaults when they call this object.
+
+        """
         if not username:
             username = input("\nPlease enter your username: ")
         if not password:
             password = input("Please enter your password: ")
 
-        self.username = username  # Does not matter; not used!
-        self.password = password  # Does not matter; not used!
+        # Not used as of yet. Will be used when back-end is developed.
+        self.username = username
+        self.password = password
 
+        # Toggle for account open/close; default is False (closed).
         self.account = False
         self.savings = savings
         self.chequings = chequings
         self.tax_free = tax_free
 
+        # How much money the user has in their account.
         self.savings_amount = 0
         self.chequings_amount = 0
         self.tax_free_amount = 0
 
+        # Maximum allowed money to be in account.
         self.savings_max_amount = 250000
         self.chequings_max_amount = 1000000
         self.tax_free_max_amount = 50000
 
+        # Number of withdraws allowed for each user.
         self.savings_withdraws = 0
         self.savings_withdraws_total = 5
         self.chequings_withdraws = 0
@@ -33,6 +42,7 @@ class Account(object):
         self.tax_free_withdraws = 0
         self.tax_free_withdraws_total = 1
 
+        # Interest rate per account; to be used with a time function soon.
         self.savings_interest_rate = 0.0075
         self.chequings_interest_rate = 0.005
         self.tax_free_interest_rate = 0.025
@@ -42,15 +52,15 @@ class Account(object):
         return print_out
 
     def menu_screen(self):
-        """Displays the main command prompt information for the user NOT including the user input.  """
-        top_menu = "\n\nBanking Simulator"
+        """Display the main command prompt information for the user NOT including the user input.  """
+        top_header = "\n\nBanking Simulator"
         menu_account = "Account: {}".format(self.username)
-        top_spacer = "-" * len(top_menu)
+        top_spacer = "-" * len(top_header)
         instruction = "Please enter a command \nEnter 'help' for more info"
-        print("{}\n{}\n{}\n{}".format(top_menu, menu_account, top_spacer, instruction))
+        print("{}\n{}\n{}\n{}".format(top_header, menu_account, top_spacer, instruction))
 
     def account_bridge(self):
-        """Creates a 'bridge' between the user's input and the open/close condition of their account(s).  """
+        """Create a 'bridge' between the user's input and the open/close condition of their account(s).  """
         if not self.savings and not self.chequings and not self.tax_free:
             cmd_ab = input("\nYou do not have any accounts! Do you want to open one [y/n]? ")
 
@@ -61,7 +71,7 @@ class Account(object):
             self.account_main()
 
     def account_main(self):
-        """Displays basic commands for the users account; correlates to the classes methods.
+        """Display basic commands for the users account; correlates to the classes methods.
 
         The functionality of this method is also accessible from main().
 
@@ -106,7 +116,7 @@ class Account(object):
             if not self.savings:
                 print("\nOpened a Savings account!")
                 self.savings = True
-                self.account = True
+                self.account = True  # The user has at least 1 account.
             else:
                 print("\nERROR: Only one savings account allowed per user!")
         elif account_choice == "chequings":
@@ -150,14 +160,14 @@ class Account(object):
     def deposit(self):
         """Deposits money into one of the users accounts if that account is opened.
 
-        There is a max limit on how much money each account can hold.
+        Note: there is a max limit on how much money each account can hold.
 
         """
         account_deposit = input("\nWhich account would you like to deposit to [savings, chequings, tax free]? ")
 
         if account_deposit == "savings" and self.savings:
             deposit = input("Amount to deposit into savings account: ")
-            error = error_check_int(deposit)
+            error = error_check_int(deposit)  # Handles ValueError Exception
 
             if not error:
                 if not int(deposit) + self.savings_amount > self.savings_max_amount:
@@ -206,17 +216,17 @@ class Account(object):
     def withdraw(self):
         """Withdraws money from one of the users accounts if that account is opened and has money in it.
 
-        There is a max number of withdraws per account.
+        Note: there is a max number of withdraws per account.
 
         """
         account_withdraw = input("\nWhich account would you like to withdraw from [savings, chequings, tax free]? ")
 
         if account_withdraw == "savings" and self.savings:
-            withdraw_limit = self.withdraw_check(check="savings")
+            withdraw_limit = self.withdraw_limit(check="savings")
 
-            if withdraw_limit:
+            if not withdraw_limit:
                 withdraw = input("Amount to withdraw from savings account: ")
-                error = error_check_int(withdraw)
+                error = error_check_int(withdraw)  # Handles ValueError Exception
 
                 if not error:
                     if int(withdraw) < self.savings_amount:
@@ -229,9 +239,9 @@ class Account(object):
                     print("\nNote: Withdraw did not work as '{}' is invalid!".format(withdraw))
 
         elif account_withdraw == "chequings" and self.chequings:
-            withdraw_limit = self.withdraw_check(check="chequings")
+            withdraw_limit = self.withdraw_limit(check="chequings")
 
-            if withdraw_limit:
+            if not withdraw_limit:
                 withdraw = input("Amount to withdraw from chequings account: ")
                 error = error_check_int(withdraw)
 
@@ -246,9 +256,9 @@ class Account(object):
                     print("\nNote: Withdraw did not work as '{}' is invalid!".format(withdraw))
 
         elif account_withdraw == "tax free" and self.tax_free:
-            withdraw_limit = self.withdraw_check(check="tax free")
+            withdraw_limit = self.withdraw_limit(check="tax free")
 
-            if withdraw_limit:
+            if not withdraw_limit:
                 withdraw = input("Amount to withdraw from tax free account: ")
                 error = error_check_int(withdraw)
 
@@ -265,39 +275,39 @@ class Account(object):
         else:
             print("\nERROR: you have not opened that account yet!")
 
-    def withdraw_check(self, check=""):
+    def withdraw_limit(self, check=""):
         """Checks to see if the withdraw limit on a user's account has been reached.
 
         Args:
             check (str): Defines what account will be checked.
 
         Return:
-            bool: False if limit has been reached; else True.
+            bool: True if limit has been reached; else False.
 
         """
         if check == "savings":
             if self.savings_withdraws == self.savings_withdraws_total:
                 print("\nERROR: Max amount of withdraws reached for savings account!")
-                return False
-            else:
                 return True
+            else:
+                return False
         elif check == "chequings":
             if self.chequings_withdraws == self.chequings_withdraws_total:
                 print("\nERROR: Max amount of withdraws reached for chequings account!")
-                return False
-            else:
                 return True
+            else:
+                return False
         elif check == "tax free":
             if self.tax_free_withdraws == self.tax_free_withdraws_total:
                 print("\nERROR: Max amount of withdraws reached for tax free account!")
-                return False
-            else:
                 return True
+            else:
+                return False
         else:
             print("ERROR: '{}' not valid input!".format(check))
 
     def savings_account(self):
-        """Displays the user's savings account information if the user has a saving account.  """
+        """Displays the user's savings account information if the user has opened a savings account.  """
         if self.savings:
             print("\nYour Savings account info:")
             print("Amount: ${}\nInterest Rate: {}\nWithdraws: {}/{}".format(self.savings_amount,
@@ -306,7 +316,7 @@ class Account(object):
                                                                             self.savings_withdraws_total))
 
     def chequings_account(self):
-        """Displays the user's chequings account information if the user has a chequings account.  """
+        """Displays the user's chequings account information if the user has opened a chequings account.  """
         if self.chequings:
             print("\nYour Chequings account info:")
             print("Amount: ${}\nInterest Rate: {}\nWithdraws: {}/{}".format(self.chequings_amount,
@@ -315,7 +325,7 @@ class Account(object):
                                                                             self.chequings_withdraws_total))
 
     def tax_free_account(self):
-        """Displays the user's tax free account information if the user has a tax free account.  """
+        """Displays the user's tax free account information if the user has opened a tax free account.  """
         if self.tax_free:
             print("\nYour Tax Free account info:")
             print("Amount: ${}\nInterest Rate: {}\nWithdraws: {}/{}".format(self.tax_free_amount,

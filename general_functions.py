@@ -1,5 +1,5 @@
 def menu_help():
-    """Prints the menu help strings below to the console.  """
+    """Prints the menu help commands to the console."""
     summary = "Banking Simulator is a bank account simulator that can test banking practices over time.\n"
     more_info = "Once a user opens an account, they will have access to the following actions:\ndeposit, withdraw, " \
                 "open account, close account.\n\nNOTE: A user opens their first account by first entering the " \
@@ -19,11 +19,13 @@ def menu_help():
                                                              cmd_withdraw=cmd_withdraw,
                                                              cmd_open_account=cmd_open_account,
                                                              cmd_close_account=cmd_close_account))
-    input("Press Enter to continue:")
+    input("Press Enter to continue: ")
 
 
 def error_check_int(item):
     """Attempts to convert item to int(item).
+
+    Function reduces the number of instances of redundant try/except blocks.
 
     Args:
         item (str): String to be converted.
