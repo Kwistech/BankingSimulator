@@ -1,4 +1,5 @@
 from general_functions import error_check_int
+from interest_calcs import simple_interest_calc
 
 
 class Account(object):
@@ -342,3 +343,35 @@ class Account(object):
             self.tax_free_account()
         else:
             print("\nERROR: You don't have any accounts!")
+
+    def time_simulation(self):
+        if self.account:
+            print("\nBanking Simulation")
+            account = input("Which account do you want to simulate? ").lower()
+            # interest_type = input("What interest type [simple, compound]: ")
+            months = input("How many months do you want to run the simulation? ")
+            error = error_check_int(months)
+
+            if not error and account in ["savings", "chequings", "tax free"]:
+                months = int(months)
+
+                if account == "savings":
+                    simple_interest_calc(account="savings",
+                                         principle=self.savings_amount,
+                                         interest_rate=self.savings_interest_rate,
+                                         months=months)
+                elif account == "chequings":
+                    simple_interest_calc(account="chequings",
+                                         principle=self.chequings_amount,
+                                         interest_rate=self.chequings_interest_rate,
+                                         months=months)
+                elif account == "tax free":
+                    simple_interest_calc(account="tax free",
+                                         principle=self.tax_free_amount,
+                                         interest_rate=self.tax_free_interest_rate,
+                                         months=months)
+            else:
+                print("\nERROR: Time simulation did not work as {} is invalid!".format(account))
+        else:
+            print("\nERROR: You don't have any accounts!")
+

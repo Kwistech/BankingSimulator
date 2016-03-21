@@ -33,6 +33,8 @@ def main():
             account.open_account()
         elif cmd == "close account":
             account.close_account()
+        elif cmd == "simulation":
+            account.time_simulation()
         else:
             print("\nERROR: Input not valid!")
 
