@@ -1,5 +1,5 @@
 from general_functions import error_check_int
-from interest_calcs import simple_interest_calc
+from interest_calcs import simple_interest_calc, compound_interest_calc
 
 
 class Account(object):
@@ -345,33 +345,56 @@ class Account(object):
             print("\nERROR: You don't have any accounts!")
 
     def time_simulation(self):
+        """Calculates and prints the total amount of money accrued with interest over a specified amount of time.
+
+        Requirements: the user must have at least one open bank account with funds in it. Called via main().
+
+        The user can choose to use either simple or compound interest to use in their simulation and must provide a
+        length of time in months.
+
+        """
         if self.account:
             print("\nBanking Simulation")
             account = input("Which account do you want to simulate? ").lower()
-            # interest_type = input("What interest type [simple, compound]: ")
+            interest_type = input("What interest type [simple, compound]: ")
             months = input("How many months do you want to run the simulation? ")
             error = error_check_int(months)
 
             if not error and account in ["savings", "chequings", "tax free"]:
                 months = int(months)
 
-                if account == "savings":
+                if account == "savings" and interest_type == "simple":
                     simple_interest_calc(account="savings",
                                          principle=self.savings_amount,
                                          interest_rate=self.savings_interest_rate,
                                          months=months)
-                elif account == "chequings":
+                elif account == "chequings" and interest_type == "simple":
                     simple_interest_calc(account="chequings",
                                          principle=self.chequings_amount,
                                          interest_rate=self.chequings_interest_rate,
                                          months=months)
-                elif account == "tax free":
+                elif account == "tax free" and interest_type == "simple":
                     simple_interest_calc(account="tax free",
                                          principle=self.tax_free_amount,
                                          interest_rate=self.tax_free_interest_rate,
                                          months=months)
+
+                elif account == "savings" and interest_type == "compound":
+                    compound_interest_calc(account="savings",
+                                           principle=self.savings_amount,
+                                           interest_rate=self.savings_interest_rate,
+                                           months=months - 1)  # Interest doesn't start until after the first month.
+                elif account == "chequings" and interest_type == "compound":
+                    compound_interest_calc(account="chequings",
+                                           principle=self.chequings_amount,
+                                           interest_rate=self.chequings_interest_rate,
+                                           months=months - 1)
+                elif account == "tax free" and interest_type == "compound":
+                    compound_interest_calc(account="tax free",
+                                           principle=self.tax_free_amount,
+                                           interest_rate=self.tax_free_interest_rate,
+                                           months=months - 1)
             else:
                 print("\nERROR: Time simulation did not work as {} is invalid!".format(account))
         else:
             print("\nERROR: You don't have any accounts!")
-
