@@ -44,3 +44,23 @@ def error_check_int(item):
     except ValueError:
         print("ERROR: Input not valid.")
         return True
+
+
+def error_check_float(item):
+        """Attempts to convert item to float(item).
+
+        Function reduces the number of instances of redundant try/except blocks.
+
+        Args:
+            item (str): String to be converted.
+
+        Return:
+            bool: True if error; else False.
+
+        """
+        try:
+            float(item)
+            return False
+        except ValueError:
+            print("ERROR: Input not valid.")
+            return True

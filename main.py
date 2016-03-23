@@ -7,7 +7,7 @@ def main():
     """Runs program with account.py and general_functions.py.
 
     When the program starts, it asks the user for a username and a password. This will be the account the user will use
-    for this program. Note: The full user back-end is not programmed yet and so the users info is not saved!
+    for this program. Note: The full user back-end is not programmed yet and so the users info is not used/saved!
 
     """
     top_menu = "\n\nWelcome to the Banking Simulator!"

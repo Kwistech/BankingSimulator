@@ -1,4 +1,4 @@
-from general_functions import error_check_int
+from general_functions import error_check_int, error_check_float
 from interest_calcs import simple_interest_calc, compound_interest_calc
 
 
@@ -26,14 +26,14 @@ class Account(object):
         self.tax_free = tax_free
 
         # How much money the user has in their account.
-        self.savings_amount = 0
-        self.chequings_amount = 0
-        self.tax_free_amount = 0
+        self.savings_amount = 0.0  # How do i round ALL calls of these variables to two decimal places?
+        self.chequings_amount = 0.0
+        self.tax_free_amount = 0.0
 
         # Maximum allowed money to be in account.
-        self.savings_max_amount = 250000
-        self.chequings_max_amount = 1000000
-        self.tax_free_max_amount = 50000
+        self.savings_max_amount = 250000.00
+        self.chequings_max_amount = 1000000.00
+        self.tax_free_max_amount = 50000.00
 
         # Number of withdraws allowed for each user.
         self.savings_withdraws = 0
@@ -168,12 +168,12 @@ class Account(object):
 
         if account_deposit == "savings" and self.savings:
             deposit = input("Amount to deposit into savings account: ")
-            error = error_check_int(deposit)  # Handles ValueError Exception
+            error = error_check_float(deposit)  # Handles ValueError Exception
 
             if not error:
-                if not int(deposit) + self.savings_amount > self.savings_max_amount:
+                if not float(deposit) + self.savings_amount > self.savings_max_amount:
                     print("\n${} successfully deposited into savings account!".format(deposit))
-                    self.savings_amount += int(deposit)
+                    self.savings_amount += float(deposit)
                 else:
                     print("\nERROR: Deposit: ${} + Account: ${} > total allowed ${}!".format(deposit,
                                                                                              self.savings_amount,
@@ -183,12 +183,12 @@ class Account(object):
 
         elif account_deposit == "chequings" and self.chequings:
             deposit = input("Amount to deposit into chequings account: ")
-            error = error_check_int(deposit)
+            error = error_check_float(deposit)
 
             if not error:
-                if not int(deposit) + self.chequings_amount > self.chequings_max_amount:
+                if not float(deposit) + self.chequings_amount > self.chequings_max_amount:
                     print("\n${} successfully deposited into chequings account!".format(deposit))
-                    self.chequings_amount += int(deposit)
+                    self.chequings_amount += float(deposit)
                 else:
                     print("\nERROR: Deposit: ${} + Account: ${} > total allowed ${}!".format(deposit,
                                                                                              self.chequings_amount,
@@ -198,12 +198,12 @@ class Account(object):
 
         elif account_deposit == "tax free" and self.tax_free:
             deposit = input("Amount to deposit into tax free account: ")
-            error = error_check_int(deposit)
+            error = error_check_float(deposit)
 
             if not error:
-                if not int(deposit) + self.tax_free_amount > self.tax_free_max_amount:
+                if not float(deposit) + self.tax_free_amount > self.tax_free_max_amount:
                     print("\n${} successfully deposited into tax free account!".format(deposit))
-                    self.tax_free_amount += int(deposit)
+                    self.tax_free_amount += float(deposit)
                 else:
                     print("\nERROR: Deposit: ${} + Account: ${} > total allowed ${}!".format(deposit,
                                                                                              self.tax_free_amount,
@@ -227,12 +227,12 @@ class Account(object):
 
             if not withdraw_limit:
                 withdraw = input("Amount to withdraw from savings account: ")
-                error = error_check_int(withdraw)  # Handles ValueError Exception
+                error = error_check_float(withdraw)  # Handles ValueError Exception
 
                 if not error:
-                    if int(withdraw) < self.savings_amount:
+                    if float(withdraw) < self.savings_amount:
                         print("\nSuccessfully withdrew ${} from savings account!".format(withdraw))
-                        self.savings_amount -= int(withdraw)
+                        self.savings_amount -= float(withdraw)
                         self.savings_withdraws += 1
                     else:
                         print("\nERROR: Not enough money in this account for withdraw!")
@@ -244,12 +244,12 @@ class Account(object):
 
             if not withdraw_limit:
                 withdraw = input("Amount to withdraw from chequings account: ")
-                error = error_check_int(withdraw)
+                error = error_check_float(withdraw)
 
                 if not error:
-                    if int(withdraw) < self.chequings_amount:
+                    if float(withdraw) < self.chequings_amount:
                         print("\nSuccessfully withdrew ${} from chequings account!".format(withdraw))
-                        self.chequings_amount -= int(withdraw)
+                        self.chequings_amount -= float(withdraw)
                         self.chequings_withdraws += 1
                     else:
                         print("\nERROR: Not enough money in this account for withdraw!")
@@ -261,12 +261,12 @@ class Account(object):
 
             if not withdraw_limit:
                 withdraw = input("Amount to withdraw from tax free account: ")
-                error = error_check_int(withdraw)
+                error = error_check_float(withdraw)
 
                 if not error:
-                    if int(withdraw) < self.tax_free_amount:
+                    if float(withdraw) < self.tax_free_amount:
                         print("\nSuccessfully withdrew ${} from tax free account!".format(withdraw))
-                        self.tax_free_amount -= int(withdraw)
+                        self.tax_free_amount -= float(withdraw)
                         self.tax_free_withdraws += 1
                     else:
                         print("\nERROR: Not enough money in this account for withdraw!")
@@ -381,19 +381,22 @@ class Account(object):
 
                 elif account == "savings" and interest_type == "compound":
                     compound_interest_calc(account="savings",
-                                           principle=self.savings_amount,
+                                           calculation=self.savings_amount,
                                            interest_rate=self.savings_interest_rate,
-                                           months=months - 1)  # Interest doesn't start until after the first month.
+                                           months=months - 1,  # Interest doesn't start until after the first month.
+                                           principle=self.savings_amount)
                 elif account == "chequings" and interest_type == "compound":
                     compound_interest_calc(account="chequings",
-                                           principle=self.chequings_amount,
+                                           calculation=self.chequings_amount,
                                            interest_rate=self.chequings_interest_rate,
-                                           months=months - 1)
+                                           months=months - 1,
+                                           principle=self.chequings_amount)
                 elif account == "tax free" and interest_type == "compound":
                     compound_interest_calc(account="tax free",
-                                           principle=self.tax_free_amount,
+                                           calculation=self.tax_free_amount,
                                            interest_rate=self.tax_free_interest_rate,
-                                           months=months - 1)
+                                           months=months - 1,
+                                           principle=self.tax_free_amount)
             else:
                 print("\nERROR: Time simulation did not work as {} is invalid!".format(account))
         else:
