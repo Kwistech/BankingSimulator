@@ -61,4 +61,6 @@ Press Enter to continue:
 
 **accounts.py** imports **interest_calcs.py** to calculate interest on user account.
 
+**user_accounts** is directory for all user created and modified accounts.
+
 For more info, check the [project's wiki](https://github.com/Kwistech/BankingSimulator/wiki) 
