@@ -28,6 +28,7 @@ User can do common banking actions such as:
 + Close an account
 + Make deposits
 + Make withdraws
++ Save account
 
 #### Simulation ####
 
