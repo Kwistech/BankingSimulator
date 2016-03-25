@@ -5,19 +5,16 @@ from interest_calcs import simple_interest_calc, compound_interest_calc
 class Account(object):
     """User bank account filled with methods to do basic real-life bank transactions.  """
 
-    def __init__(self, username="", password="", savings=False, chequings=False, tax_free=False):
+    def __init__(self, username="", savings=False, chequings=False, tax_free=False):
         """The parameters are all set to defaults so that a user can create an account without setting account
         properties to their defaults when they call this object.
 
         """
         if not username:
-            username = input("\nPlease enter your username: ")
-        if not password:
-            password = input("Please enter your password: ")
+            username = input("\nPlease enter a username: ")
 
         # Not used as of yet. Will be used when back-end is developed.
         self.username = username
-        self.password = password
 
         # Toggle for account open/close; default is False (closed).
         self.account = False
@@ -26,7 +23,7 @@ class Account(object):
         self.tax_free = tax_free
 
         # How much money the user has in their account.
-        self.savings_amount = 0.0  # How do i round ALL calls of these variables to two decimal places?
+        self.savings_amount = 0.0  # How do I round all calls of these variables to two decimal places?
         self.chequings_amount = 0.0
         self.tax_free_amount = 0.0
 
