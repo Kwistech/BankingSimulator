@@ -1,0 +1,22 @@
+{
+    "account": false,
+    "chequings_amount": 0.0,
+    "savings_amount": 0.0,
+    "savings_max_amount": 250000.0,
+    "savings_interest_rate": 0.0075,
+    "chequings_withdraws": 0,
+    "tax_free_amount": 0.0,
+    "tax_free_withdraws_total": 1,
+    "savings_withdraws_total": 5,
+    "tax_free": false,
+    "tax_free_withdraws": 0,
+    "username": "Kwistech",
+    "chequings_withdraws_total": 20,
+    "savings": false,
+    "chequings_max_amount": 1000000.0,
+    "tax_free_interest_rate": 0.025,
+    "chequings": false,
+    "savings_withdraws": 0,
+    "tax_free_max_amount": 50000.0,
+    "chequings_interest_rate": 0.005
+}

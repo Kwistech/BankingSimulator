@@ -1,3 +1,7 @@
+import json
+import os
+
+
 def menu_help():
     """Prints the menu help commands to the console."""
     summary = "Banking Simulator is a bank account simulator that can test banking practices over time.\n"
@@ -64,3 +68,19 @@ def error_check_float(item):
         except ValueError:
             print("ERROR: Input not valid.")
             return True
+
+
+def save(account):
+    """Saves all user's account information to a json file in user_accounts directory.
+
+    Args:
+        account (class): Current users account object information.
+
+    """
+    try:
+        os.mkdir("./user_accounts")
+    except FileExistsError:
+        pass
+    f = open("./user_accounts/{}_account.json".format(account.username.lower()), "w")
+    json.dump(vars(account), f, indent=4)
+    f.close()

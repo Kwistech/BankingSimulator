@@ -1,6 +1,6 @@
 # Banking Simulator - Johnathon Kwisses (Kwistech)
 from account import Account
-from general_functions import menu_help
+from general_functions import menu_help, save
 
 
 def main():
@@ -33,6 +33,8 @@ def main():
             account.open_account()
         elif cmd == "close account":
             account.close_account()
+        elif cmd == "save":
+            save(account)
         elif cmd == "simulation":
             account.time_simulation()
         else:
