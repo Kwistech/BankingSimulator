@@ -37,6 +37,8 @@ def main():
             save(account)
         elif cmd == "simulation":
             account.time_simulation()
+        elif cmd[0].lower() == "q":
+            break
         else:
             print("\nERROR: Input not valid!")
 
