@@ -1,5 +1,5 @@
 # BankingSimulator
-Bank account simulator that can test banking practices over time
+Bank account simulator that can test banking practices over time. (Python 3.5)
 
 ## Features ##
 
